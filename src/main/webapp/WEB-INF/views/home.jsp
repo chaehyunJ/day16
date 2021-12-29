@@ -33,7 +33,8 @@
 <body>
 
 <h2><a href="${ cpath }">외부 서버 데이터 받아오기</a></h2>
-
+<hr>
+<a href="${ cpath }/ex01">ex01</a>
 <div class="list"></div>
 
 <script>

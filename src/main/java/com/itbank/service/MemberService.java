@@ -8,8 +8,10 @@ import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Scanner;
 
+import org.json.simple.JSONObject;
 import org.json.simple.parser.*;
 
 import org.springframework.stereotype.Service;
@@ -22,16 +24,21 @@ public class MemberService {
 	// 자바코드를 활용하여 내 웹 서버에서 다른 서버의 json데이터를 받아오기
 	public String getMemberList() throws IOException {
 		
+		
 		String url = "http://221.164.9.200/memberList";
 		
 //		String url = "http://apis.data.go.kr/6260000/FoodService/getFoodKr?serviceKey=q6WAnLS1b6vUa9VoLCKmB14TY6kJ3AotCfHj10BgvLRuyQTk6nnlrOruwjHTWL9K8XZ%2B8L6Ic26%2BDJdRsSzOTw%3D%3D&pageNo=1&numOfRows=10&resultType=json";
 		
+		// url 객체 생성
 		URL requestURL = new URL(url);
 		
+		// connection 생성
 		HttpURLConnection conn = (HttpURLConnection)requestURL.openConnection();
 				
+		// connection 옵션 설정
 		conn.setRequestMethod("GET");
 		
+		// connection 옵션 설정
 		conn.setRequestProperty("Context-type", "application/json; charset=utf-8");
 		
 		Scanner sc = null;
@@ -68,6 +75,49 @@ public class MemberService {
 		
 		
 		
+		return null;
+	}
+
+	public String storeList() throws IOException, ParseException {
+		String url = "http://apis.data.go.kr/6260000/FoodService/getFoodKr?serviceKey=q6WAnLS1b6vUa9VoLCKmB14TY6kJ3AotCfHj10BgvLRuyQTk6nnlrOruwjHTWL9K8XZ%2B8L6Ic26%2BDJdRsSzOTw%3D%3D&pageNo=1&numOfRows=10&resultType=json";
+
+		URL requestURL =  new URL(url);
+		HttpURLConnection conn = (HttpURLConnection)requestURL.openConnection();
+		
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Content-type", "application/json; charset=utf-8");
+		
+		Scanner sc = null;
+		
+		String json = "";
+		
+	
+		if(conn.getResponseCode() == 200) {
+			sc = new Scanner(conn.getInputStream());
+			
+			while(sc.hasNext()) {
+				json += sc.nextLine();
+			}
+			sc.close();
+			conn.disconnect();
+			
+			System.out.println(json);
+			
+
+			
+			// json parser를 만들어 만들어진 문자열 데이터를 객체화
+			JSONParser parser = new JSONParser();
+			JSONObject jsonObject = (JSONObject)parser.parse(json);
+			System.out.println("json : " + jsonObject);
+			JSONObject foodKr = (JSONObject)jsonObject.get("getFoodKr");
+			System.out.println("foodKR : " + foodKr);
+			
+			JSONObject items = (JSONObject)jsonObject.get("item");
+			
+			System.out.println("item : " + items);
+			
+			return json;
+		}
 		return null;
 	}
 
