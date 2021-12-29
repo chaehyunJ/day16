@@ -50,28 +50,27 @@
 	.then(json => {
 		console.log(json)
 		console.log(json.length)
-		let dom = ''
-		for(let i = 0; i < json.length; i++){
-			console.log(json[i].userid)
-			dom += '<div class="items">'
-			dom += '<div>' + json[i].userid + '</div>'
-			dom += '<div>' + json[i].userpw + '</div>'
-			dom += '<div>' + json[i].username + '</div>'
-			dom += '<div>' + json[i].email + '</div>'
-			dom += '<div>' + json[i].gender + '</div>'
-			dom += '</div>'
-		}
+
 	
-		list.innerHTML += dom
+		list.innerHTML += getDom(json)
 	})
 	
+
 	function getDom(json){
-		
-		
-
-
-
+		let dom = ''
+			json.forEach(dto => {
+				console.log(dto.userid)
+				dom += '<div class="items">'
+				dom += '<div>' + dto.userid + '</div>'
+				dom += '<div>' + dto.userpw + '</div>'
+				dom += '<div>' + dto.username + '</div>'
+				dom += '<div>' + dto.email + '</div>'
+				dom += '<div>' + dto.gender + '</div>'
+				dom += '</div>'
+			})
+		return dom
 	}
+	
 	
 </script>
 </body>
